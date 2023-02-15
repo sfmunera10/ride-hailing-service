@@ -41,7 +41,7 @@ export class ValidationPipe implements PipeTransform<any> {
   }
 
   private formatErrors(errors: ValidationError[]): IValidationError[] {
-    return errors.map(err => {
+    return errors.map((err) => {
       return {
         property: err.property,
         errors: Object.keys(err.constraints),
