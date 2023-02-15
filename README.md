@@ -16,12 +16,22 @@ Actions
 		Create a transaction, charging the user the total amount
 
 Entities
-	User
-		Rider
-		Driver
-	Payment method
-	Ride Payment
-	Ride
+
+	User has payment methods, rides as rider, rides as driver
+
+	User <id, given_name, family_name, date_of_birth, 
+	locale, mobile_phone_number, gender, email, 
+	user_group_id, created_at, updated_at>
+	
+	User Group <id, name>
+
+	User Payment Method <user_id, payment_method_id>
+
+	Ride <id, rider_id, driver_id, number_of_passengers, status, km_traveled, minutes_passed>
+
+	Ride Payment <ride_id, amount>
+	
+	Payment method <id, name>	
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
