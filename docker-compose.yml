@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  db:
+    image: mysql
+    container_name: mysql
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+    ports:
+      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+    volumes:
+      - db:/var/lib/mysql
+      # - ./database:/docker-entrypoint-initdb.d
+    networks:
+      - backend
+  backend:
+    depends_on:
+      - db
+    build: ./backend
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    environment:
+      - NODE_LOCAL_PORT=$NODE_LOCAL_PORT
+      - MYSQLDB_HOST=$MYSQLDB_HOST
+      - MYSQLDB_USER=$MYSQLDB_USER
+      - MYSQLDB_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - MYSQLDB_DATABASE=$MYSQLDB_DATABASE
+      - MYSQLDB_LOCAL_PORT=$MYSQLDB_LOCAL_PORT
+      - CLIENT_ORIGIN=$CLIENT_ORIGIN
+      - MOBIERA_API_URL=$MOBIERA_API_URL
+    networks:
+      - backend
+      - ui
+volumes:
+  db:
+networks:
+  backend:
+
+    # After successful docker-compose run following commands in backend folder
+    # npx prisma migrate dev --name init
+    # npx prisma db seed
